@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "devStart": "nodemon index.js"
+    "dev": "nodemon index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

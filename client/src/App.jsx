@@ -10,6 +10,9 @@ import AccountPage from "./pages/AccountPage.jsx";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.withCredentials=true;  
+axios.defaults.headers ={
+  scheme: 'https',
+}
 
 function App() {
   return (
