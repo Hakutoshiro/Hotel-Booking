@@ -4,11 +4,11 @@ const { handleRegister,
     handleAccessProfile,
     handleLogout } = require('../controllers/userControllers');
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.post('/register',handleRegister);
-router.post('/login',handleLogin);
-router.get('/profile',handleAccessProfile)
-router.post('/logout',handleLogout)
+userRouter.post('/register',handleRegister);
+userRouter.post('/login',handleLogin);
+userRouter.get('/profile',handleAccessProfile)
+userRouter.post('/logout',handleLogout)
 
-module.exports = router
+module.exports = userRouter

@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../sharedContext/UserContext";
 
 
 export default function LoginPage(){
@@ -19,7 +19,7 @@ export default function LoginPage(){
 
             alert('Login successful')
             setRedirect(true);
-        } catch (error) {
+        } catch (error) { 
             alert('Login failed.')
         }
     }

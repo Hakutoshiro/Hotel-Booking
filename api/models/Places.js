@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-import { Schema } from 'mongoose';
+const {Schema} = mongoose;
 
 const PlaceSchema = Schema({
     owner: {type :Schema.Types.ObjectId,ref:'User'},

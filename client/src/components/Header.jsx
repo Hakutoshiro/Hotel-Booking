@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { UserContext } from "./UserContext";
+import { UserContext } from "../sharedContext/UserContext";
 import { useContext } from "react";
 
 export default function Header()
