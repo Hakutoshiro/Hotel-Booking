@@ -20,7 +20,7 @@ app.use(cors({
 
 mongoose.connect(process.env.MONGO_URL)
 
-
+ 
 app.use('/',userRouter);
 app.use('/photoUpload',photosUploadRouter)
 app.use('/places',placesRouter)

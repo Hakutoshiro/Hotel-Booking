@@ -3,12 +3,13 @@ import Perks from "../components/Perks";
 import UploadPhotos from "../components/UploadPhotos";
 import { PhotosContext } from "../sharedContext/PhotosContext";
 import axios from "axios";
-import {Navigate} from "react-router-dom";
+import {Navigate, useParams} from "react-router-dom";
+import UpdateUploadedPhotos from "../components/UpdateUploadedPhotos";
 
 export default function PlacesPageForm(){
 
     const {setAddedPhotos:prevAddedPhotos} = useContext(PhotosContext);
-        
+    const {id} = useParams();       
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('');
     const [description, setDescription] = useState('');
@@ -19,14 +20,41 @@ export default function PlacesPageForm(){
     const [maxGuests, setMaxGuests] = useState(1);
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [redirect,setRedirect] = useState(false);
+    const [price ,setPrice] = useState('');
 
     const getPhotos = async () => {
+        if(!id)
         await setAddedPhotos(prevAddedPhotos);
+        else {
+            return ;
+        }
     }
 
     useEffect(()=>{
         getPhotos();
     },[prevAddedPhotos,setAddedPhotos])
+
+    const getPlacesUsingId = async () => {
+        const {data} = await axios.get('/places/'+id )
+        setTitle(data.title);
+        setAddress(data.address);
+        setDescription(data.description);
+        setPerks(data.perks);
+        setExtraInfo(data.extraInfo);
+        setAddedPhotos(data.photos);
+        setCheckIn(data.checkIn);
+        setCheckOut(data.checkOut);
+        setMaxGuests(data.maxGuests);
+        setPrice(data.price);
+    }
+
+    useEffect(()=>{
+        if(!id){
+            return;
+        }else {
+            getPlacesUsingId();
+        }
+    },[id])
 
     const inputHeader = (text) => {
         return (
@@ -49,15 +77,31 @@ export default function PlacesPageForm(){
 
     const handleSubmitBtn = async (ev) => {
         ev.preventDefault();
-        await axios.post('/places',{
+        const placeData = {
             title,address,description,
             perks,checkIn,checkOut,
-            extraInfo ,maxGuests,addedPhotos
-        } )
+            extraInfo ,maxGuests,addedPhotos,price
+        }
+        if(id){
+            await axios.put('/places', {
+                id,title,address,description,
+                perks,checkIn,checkOut,
+                extraInfo ,maxGuests,addedPhotos:prevAddedPhotos,price})
+        }else{
+            await axios.post('/places', placeData)
+        }
         setRedirect(true);
     }
     if(redirect){
         return <Navigate to={'/account/places'} />;
+    }
+
+    const handlePriceAmount = (ev) => {
+        if(isNaN(Number(ev.target.value))){
+            window.alert('Please enter valid price amount')
+            return ;
+        }
+        setPrice(Number(ev.target.value))
     }
 
     return (
@@ -67,7 +111,8 @@ export default function PlacesPageForm(){
                         {preInput('Address', 'Address to this place')}
                         <input type="text" value={address} onChange={ev => setAddress(ev.target.value)} placeholder="address" />
                         {preInput('Photos', 'more = better')}
-                        <UploadPhotos />
+                        {!id && (<UploadPhotos />)}
+                        {id && (<UpdateUploadedPhotos />)}
                         {preInput('Description', 'description of the place')}
                         <textarea
                             value={description}
@@ -107,7 +152,10 @@ export default function PlacesPageForm(){
                             </div>
                             <div>
                                 <h3 className="mt-2 -mb-1">Price per night</h3>
-                                <input type="number" className="mt-3" />
+                                <input type="number" className="mt-3" 
+                                    value={price}
+                                    onChange={ev => handlePriceAmount(ev)}
+                                />
                             </div>
                         </div>
                         <button className="primary my-4">Save</button>
