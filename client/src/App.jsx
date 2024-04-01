@@ -8,6 +8,7 @@ import axios from "axios";
 import { UserContextProvider } from "./sharedContext/UserContext.jsx";
 import AccountPage from "./pages/AccountPage.jsx";
 import { PhotosContextProvider } from "./sharedContext/PhotosContext.jsx";
+import ShowPlacePage from "./pages/ShowPlacePage.jsx";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.withCredentials = true;
@@ -26,6 +27,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/account/:subpages?" element={<AccountPage />} />
             <Route path="/account/:subpages/:action?/:id?" element={<AccountPage />} />
+            <Route path="/place/:id" element={<ShowPlacePage />} />
           </Route>
         </Routes>
       </PhotosContextProvider>

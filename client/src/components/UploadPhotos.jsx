@@ -62,7 +62,7 @@ export default function UploadPhotos() {
                     return (
                         <div className="flex relative">
 
-                            <img key={index} src={'http://localhost:4000/uploads/' + photo} className="rounded-xl h-32 w-full object-cover"
+                            <img key={index} src={import.meta.env.VITE_BACKEND_URL+'/uploads/' + photo} className="rounded-xl h-32 w-full object-cover"
                                 onClick={ev => handlePhotoOrder(index)}
                             />
                             <button className="absolute bottom-1 right-1 text-white bg-black py-1 px-1 rounded-2xl bg-opacity-50"

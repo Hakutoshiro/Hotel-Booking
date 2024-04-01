@@ -69,7 +69,7 @@ export default function UpdateUploadedPhotos() {
                     return (
                         <div className="flex  relative ">
                             <img
-                                key={index} src={'http://localhost:4000/uploads/' + photo}
+                                key={index} src={import.meta.env.VITE_BACKEND_URL+'/uploads/' + photo}
                                 className="rounded-xl h-32 w-full object-cover"
                                 onClick={ev => handlePhotoOrder(index)}
                             />
