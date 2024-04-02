@@ -1,6 +1,5 @@
 const imageDownloader = require('image-downloader');
 const fs = require('fs');
-const { log } = require('console');
 
 
 const handlePhotoUploadByLink = async (req, res) =>{

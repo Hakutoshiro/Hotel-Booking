@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/user');
 const photosUploadRouter = require('./routes/photosUpload');
 const placesRouter = require('./routes/places');
+const bookingRouter = require('./routes/booking');
 
 app.use(express.json());    //for parsing json data.
  
@@ -24,6 +25,6 @@ mongoose.connect(process.env.MONGO_URL)
 app.use('/',userRouter);
 app.use('/photoUpload',photosUploadRouter)
 app.use('/places',placesRouter)
-
+app.use('/bookings',bookingRouter)
 
 app.listen(4000)
