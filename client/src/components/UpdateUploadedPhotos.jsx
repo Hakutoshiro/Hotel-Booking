@@ -21,12 +21,12 @@ export default function UpdateUploadedPhotos() {
         handleSetAddedPhotos([...addedPhotos])
     } 
 
-    const handleDeletePhotos = (index) => {
-        let change = addedPhotos.filter((_,i)=>{return i!==index})
+    const handleDeletePhotos = async (index) => {
+        await axios.delete('/photoUpload/_/'+addedPhotos[index])
+        let change = addedPhotos.filter((_, i) => { return i !== index })
         setAddedPhotos([...change])
-        handleSetAddedPhotos([...change]); 
+        handleSetAddedPhotos([...change]);
     }
-
 
     const handleAddPhotos = async (ev) => {
         ev.preventDefault();
