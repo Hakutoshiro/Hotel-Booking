@@ -33,7 +33,7 @@ export default function BookingComponent({ placeInfo }) {
     }
 
     if(redirect){
-        return <Navigate to={'/account/bookings/'+resData._id} />
+        return <Navigate to={'/account/bookings/_/'+resData._id} />
     }
 
     if (!ready && user) {

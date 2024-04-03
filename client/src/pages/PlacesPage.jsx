@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom"
 import PlacesPageForm from "./PlacesPageForm"
-import AddedPlaces from "./AddedPlaces";
+import AddedPlaces from "../components/AddedPlaces";
 
 
 export default function PlacesPage() {
