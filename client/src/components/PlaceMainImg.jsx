@@ -12,7 +12,7 @@ export default function PlaceMainImg({  allPhotos }) {
     return (
         <div className="flex w-32 h-32 bg-gray-300  shrink-0">
             {photos.length > 0 &&
-                <img src={import.meta.env.VITE_BACKEND_URL + '/uploads/' + photos[0]} alt="" />
+                <img src={ photos[0]} alt="" />
             }
         </div>
     )

@@ -23,7 +23,7 @@ export default function IndexPage(){
                         {place.photos.length>0 && (
                             <img 
                             className="rounded-2xl object-cover aspect-square pb-3"
-                            src={import.meta.env.VITE_BACKEND_URL+'/uploads/'+place.photos[0]} alt="IMG <3" />
+                            src={place.photos[0]} alt="IMG <3" />
                         )}
                         <h2 className="font-bold">{place.address}</h2>
                         <h3 className="text-sm ">{place.title}</h3>

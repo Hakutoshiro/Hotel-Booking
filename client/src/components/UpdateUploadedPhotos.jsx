@@ -9,52 +9,79 @@ export default function UpdateUploadedPhotos() {
     const [photolink, setPhotolink] = useState('');
     const { id } = useParams()
 
-    const sendPhotos = async () => {
+    const getPhotos = async () => {
 
         const { data } = await axios.get('/places/photos/' + id)
         handleSetAddedPhotos([...data]);
         setAddedPhotos([...data]);
     }
+
+    const sendPhotos  = async () =>{
+        await handleSetAddedPhotos(addedPhotos);
+    }
+
     const handlePhotoOrder = (index) => {
         [addedPhotos[0], addedPhotos[index]] = [addedPhotos[index], addedPhotos[0]]
         setAddedPhotos([...addedPhotos])
         handleSetAddedPhotos([...addedPhotos])
     } 
 
-    const handleDeletePhotos = async (index) => {
-        await axios.delete('/photoUpload/_/'+addedPhotos[index])
+    const handleDeletePhotos = async (ev,index) => {
+        ev.preventDefault();
         let change = addedPhotos.filter((_, i) => { return i !== index })
         setAddedPhotos([...change])
         handleSetAddedPhotos([...change]);
     }
 
-    const handleAddPhotos = async (ev) => {
+     const handleAddPhotos = async (ev) => {
         ev.preventDefault();
         if (!photolink) return;
-        const { data: filename } = await axios.post('/photoUpload/upload-by-link', { link: photolink })
-        setAddedPhotos(prev => {
-            return [...prev, filename]
-        });
-        handleSetAddedPhotos([...addedPhotos, filename]);
+        const formData = new FormData()
+        formData.append('file', photolink)
+        formData.append('upload_preset', 'imagepreset')
+        try {
+            let cloudName = import.meta.env.VITE_CLOUD_NAME
+            let api = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`
+            fetch(api, { method: 'POST', body: formData }).then(res => res.json()).then(data => {
+                const { secure_url } = data
+                console.log(secure_url)
+                setAddedPhotos(prev => {
+                    return [...prev, secure_url]
+                });
+            }
+            )
+        } catch (error) {
+            console.log(error)
+        }
         setPhotolink('');
     }
 
 
     const uploadPhoto = async (ev) => {
         const files = ev.target.files
-        const fdata = new FormData();
         for (let i = 0; i < files.length; i++) {
-            fdata.append('photos', files[i]);
+            const formData = new FormData()
+            formData.append('file', files[i])
+            formData.append('upload_preset', 'imagepreset')
+            try {
+                let cloudName = import.meta.env.VITE_CLOUD_NAME
+                let api = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`
+                fetch(api, { method: 'POST', body: formData }).then(res => res.json()).then(data => {
+                    const { secure_url } = data
+                    console.log(secure_url)
+                    setAddedPhotos(prev => {
+                        return [...prev, secure_url]
+                    });
+                }
+                )
+            } catch (error) {
+                console.log(error)
+            }
         }
-        const { data: filenames } = await axios.post('/photoUpload/upload', fdata, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        })
-        setAddedPhotos(prev => {
-            return [...prev, ...filenames]
-        });
-        handleSetAddedPhotos([...addedPhotos, ...filenames]);
+
     }
-    useEffect(() => { sendPhotos() }, [])
+    useEffect(() => { getPhotos() }, [])
+    useEffect(() => {sendPhotos()}, [addedPhotos]) 
     return (
         <>
             <div className="flex gap-2">
@@ -69,12 +96,12 @@ export default function UpdateUploadedPhotos() {
                     return (
                         <div className="flex  relative ">
                             <img
-                                key={index} src={import.meta.env.VITE_BACKEND_URL+'/uploads/' + photo}
+                                key={index} src={photo}
                                 className="rounded-xl h-32 w-full object-cover"
                                 onClick={ev => handlePhotoOrder(index)}
                             />
                             <button className="absolute bottom-1 right-1 text-white bg-black py-1 px-1 rounded-2xl bg-opacity-50"
-                                onClick={ev => handleDeletePhotos(index)}
+                                onClick={ev => handleDeletePhotos(ev,index)}
                             >
 
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"

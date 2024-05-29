@@ -18,7 +18,7 @@ export default function PlacePhotoGallery({ placeInfo }) {
                 {placeInfo.photos?.length > 0 &&
                     placeInfo.photos?.map((photo, index) => {
                         return <div key={index} className="bg-black">
-                            <img className="mx-auto py-2 max-h-96" src={import.meta.env.VITE_BACKEND_URL + "/uploads/" + photo} alt="" />
+                            <img className="mx-auto py-2 max-h-96" src={ photo} alt="" />
                         </div>
                     })
                 }
@@ -34,7 +34,7 @@ export default function PlacePhotoGallery({ placeInfo }) {
                     {placeInfo.photos?.[0] &&
                         (
                             <div>
-                                <img className="w-full aspect-square object-cover" src={import.meta.env.VITE_BACKEND_URL + "/uploads/" + placeInfo.photos[0]} />
+                                <img className="w-full aspect-square object-cover" src={ placeInfo.photos[0]} />
                             </div>
                         )
                     }
@@ -44,14 +44,14 @@ export default function PlacePhotoGallery({ placeInfo }) {
 
                     {placeInfo.photos?.[1] &&
                         (
-                            <img className="w-full aspect-square object-cover" src={import.meta.env.VITE_BACKEND_URL + "/uploads/" + placeInfo.photos[1]} alt=""
+                            <img className="w-full aspect-square object-cover" src={placeInfo.photos[1]} alt=""
                             />
                         )
                     }
                     <div className=" overflow-hidden">
                         {placeInfo.photos?.[2] &&
                             (
-                                <img className="w-full aspect-square object-cover pt-2" src={import.meta.env.VITE_BACKEND_URL + "/uploads/" + placeInfo.photos[2]} alt=""
+                                <img className="w-full aspect-square object-cover pt-2" src={ placeInfo.photos[2]} alt=""
                                 />
                             )
                         }
